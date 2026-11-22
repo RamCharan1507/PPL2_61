@@ -26,3 +26,22 @@
     (if (null? xs)
         (my-reverse acc)
         (loop (cdr xs) (cons (fn (car xs)) acc)))))
+;; is-list? : any -> boolean
+;; Returns #t if val is a list (either empty or a pair, as no dotted pairs occur).
+(define (is-list? val)
+  (or (null? val) (pair? val)))
+
+;; insert-if-short : atom list integer -> list
+;; Base case: empty list has length 0, becoming (x) if 0 < n, else ().
+;; Recursive step: recursively transform nested sublists via my-map, then
+;; prepend x if the original length of lst is strictly less than n.
+(define (insert-if-short x lst n)
+  (let ((processed
+         (my-map (lambda (elem)
+                   (if (is-list? elem)
+                       (insert-if-short x elem n)
+                       elem))
+                 lst)))
+    (if (< (my-length lst) n)
+        (cons x processed)
+        processed)))
