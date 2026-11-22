@@ -70,3 +70,19 @@ expr_to_string(bin(Op, L, R), Str) :-
     format_left(L, Prec, LStr),
     format_right(R, Prec, RStr),
     atomics_to_string([LStr, Op, RStr], Str).
+% valid_equation(+List, -Equation) is nondet.
+% Generates each valid canonical equation string "L=R" for List by splitting List
+% into two non-empty parts whose expression trees evaluate to the same integer value.
+valid_equation(List, Equation) :-
+    split_nonempty(List, LeftNums, RightNums),
+    expr_val(LeftNums, LeftTree, Val),
+    expr_val(RightNums, RightTree, Val),
+    expr_to_string(LeftTree, LStr),
+    expr_to_string(RightTree, RStr),
+    atomics_to_string([LStr, "=", RStr], Equation).
+
+% generate_equation(+List, -Equation) is semidet.
+% Unifies Equation with one valid canonical equation string for List.
+% Fails cleanly if no valid equation exists or if List has length 0 or 1.
+generate_equation(List, Equation) :-
+    once(valid_equation(List, Equation)).
