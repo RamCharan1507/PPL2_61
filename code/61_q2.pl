@@ -86,3 +86,15 @@ valid_equation(List, Equation) :-
 % Fails cleanly if no valid equation exists or if List has length 0 or 1.
 generate_equation(List, Equation) :-
     once(valid_equation(List, Equation)).
+% all_equations(+List, -Equations) is det.
+% Unifies Equations with the deduplicated, sort/2-ordered list of all valid
+% canonical equation strings for List (or [] if none exist).
+all_equations(List, Equations) :-
+    findall(Eq, valid_equation(List, Eq), RawEquations),
+    sort(RawEquations, Equations).
+
+% count_equations(+List, -N) is det.
+% Unifies N with the number of distinct valid canonical equations for List.
+count_equations(List, N) :-
+    all_equations(List, Equations),
+    length(Equations, N).
