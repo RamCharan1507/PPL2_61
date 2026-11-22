@@ -36,3 +36,49 @@ clue(3, Solution) :-
 clue(4, Solution) :-
     memberchk(p('Ben', Dept, _, web), Solution),
     Dept \= testing.
+% Clue 5: The friend whose favorite language is Java works in the design department.
+clue(5, Solution) :-
+    memberchk(p(_, design, java, _), Solution).
+
+% Clue 6: Carla's project preference is not embedded, and her department is not development.
+clue(6, Solution) :-
+    memberchk(p('Carla', Dept, _, Project), Solution),
+    Project \= embedded,
+    Dept \= development.
+
+% Clue 7: Dana's favorite language is not Java, and she works in research or testing.
+clue(7, Solution) :-
+    memberchk(p('Dana', Dept, Lang, _), Solution),
+    Lang \= java,
+    memberchk(Dept, [research, testing]).
+
+% Clue 8: The friend who prefers data projects works in research and does not use JavaScript.
+clue(8, Solution) :-
+    memberchk(p(_, research, Lang, data), Solution),
+    Lang \= javascript.
+
+% satisfies_all(+ActiveClues, +Solution) is semidet.
+% Succeeds when Solution satisfies every clue number in ActiveClues.
+satisfies_all([], _).
+satisfies_all([N | Rest], Solution) :-
+    clue(N, Solution),
+    satisfies_all(Rest, Solution).
+
+% solve_clues(+ActiveClues, -Solution) is nondet.
+% Generates valid solutions that satisfy every clue number listed in ActiveClues.
+solve_clues(ActiveClues, Solution) :-
+    valid_solution(Solution),
+    satisfies_all(ActiveClues, Solution).
+
+% print_solution(+Solution) is det.
+% Prints each friend's assignment on its own line in the required format.
+print_solution([]).
+print_solution([p(Name, Dept, Lang, Project) | Rest]) :-
+    format('~w = [~w, ~w, ~w]~n', [Name, Dept, Lang, Project]),
+    print_solution(Rest).
+
+% main is det.
+% Derives and prints one valid solution satisfying clues 1 to 8.
+main :-
+    once(solve_clues([1, 2, 3, 4, 5, 6, 7, 8], Solution)),
+    print_solution(Solution).
