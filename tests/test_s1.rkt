@@ -3,12 +3,12 @@
 (require racket/port
          racket/runtime-path)
 
-(define-runtime-path q3-path "../code/61_q3.rkt")
+(define-runtime-path q3-path "../code/24_q3.rkt")
 (dynamic-require q3-path #f)
 (define q3-ns (module->namespace q3-path))
 
 ;; capture-output : s-expression -> string
-;; Evaluates expr in the 61_q3.rkt module namespace and captures stdout.
+;; Evaluates expr in the 24_q3.rkt module namespace and captures stdout.
 (define (capture-output expr)
   (with-output-to-string
     (lambda ()

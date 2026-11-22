@@ -1,4 +1,4 @@
-:- consult('../code/61_q2.pl').
+:- consult('../code/24_q2.pl').
 
 % test_case(+Name, +Goal) is det.
 % Executes Goal and reports PASS or FAIL without terminating Prolog.
@@ -10,7 +10,7 @@ test_case(Name, Goal) :-
     ).
 
 % run_tests is det.
-% Runs all specification examples and edge-case tests for P2 (61_q2.pl).
+% Runs all specification examples and edge-case tests for P2 (24_q2.pl).
 run_tests :-
     % 1. Spec examples
     Expected4253 = [

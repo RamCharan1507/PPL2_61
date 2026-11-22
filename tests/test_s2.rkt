@@ -3,12 +3,12 @@
 (require racket/port
          racket/runtime-path)
 
-(define-runtime-path q4-path "../code/61_q4.rkt")
+(define-runtime-path q4-path "../code/24_q4.rkt")
 (dynamic-require q4-path #f)
 (define q4-ns (module->namespace q4-path))
 
 ;; eval-q4 : s-expression -> any
-;; Evaluates expr inside the 61_q4.rkt module namespace.
+;; Evaluates expr inside the 24_q4.rkt module namespace.
 (define (eval-q4 expr)
   (eval expr q4-ns))
 

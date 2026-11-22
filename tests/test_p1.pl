@@ -1,4 +1,4 @@
-:- consult('../code/61_q1.pl').
+:- consult('../code/24_q1.pl').
 
 % test_case(+Name, +Goal) is det.
 % Executes Goal and reports PASS or FAIL without terminating Prolog.
@@ -37,7 +37,7 @@ alt_solution_3([
 ]).
 
 % run_tests is det.
-% Runs all unit and edge-case tests for P1 (61_q1.pl).
+% Runs all unit and edge-case tests for P1 (24_q1.pl).
 run_tests :-
     unique_solution(Sol1),
     alt_solution_2(Sol2),
