@@ -56,7 +56,9 @@ clue(7, Solution) :-
 clue(8, Solution) :-
     memberchk(p(_, research, Lang, data), Solution),
     Lang \= javascript.
-
+% CLUE 9: The friend who prefers the AI project works in the testing department.
+clue(9, Solution) :-
+    memberchk(p(_, testing, _, 'AI'), Solution).
 % satisfies_all(+ActiveClues, +Solution) is semidet.
 % Succeeds when Solution satisfies every clue number in ActiveClues.
 satisfies_all([], _).
@@ -79,6 +81,7 @@ print_solution([p(Name, Dept, Lang, Project) | Rest]) :-
 
 % main is det.
 % Derives and prints one valid solution satisfying clues 1 to 8.
+
 main :-
     once(solve_clues([1, 2, 3, 4, 5, 6, 7, 8], Solution)),
     print_solution(Solution).
