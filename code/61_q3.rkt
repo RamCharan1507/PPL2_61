@@ -75,3 +75,30 @@
   (newline)
   (display (postorder-list tree))
   (newline))
+;; tree-height : tree -> integer
+;; Base case: empty tree has height 0.
+;; Recursive step: 1 plus the larger of the left and right subtree heights.
+(define (tree-height tree)
+  (if (null? tree)
+      0
+      (let ((lh (tree-height (tree-left tree)))
+            (rh (tree-height (tree-right tree))))
+        (+ 1 (if (> lh rh) lh rh)))))
+
+;; leaf-count : tree -> integer
+;; Base case: empty tree has 0 leaves; a node with two empty subtrees has 1 leaf.
+;; Recursive step: sum of leaf counts of the left and right subtrees.
+(define (leaf-count tree)
+  (cond ((null? tree) 0)
+        ((and (null? (tree-left tree))
+              (null? (tree-right tree)))
+         1)
+        (else
+         (+ (leaf-count (tree-left tree))
+            (leaf-count (tree-right tree))))))
+
+;; print-height-and-leaves : tree -> void
+;; Prints the two-element list (height leaf-count) using display followed by newline.
+(define (print-height-and-leaves tree)
+  (display (list (tree-height tree) (leaf-count tree)))
+  (newline))
