@@ -36,3 +36,42 @@
 (define (print-inorder tree)
   (display (inorder-list tree))
   (newline))
+;; preorder-acc : tree list -> list
+;; Base case: empty tree returns the accumulated suffix unchanged.
+;; Recursive step: traverse right subtree, then left subtree, and cons root value in front (O(N), no append).
+(define (preorder-acc tree acc)
+  (if (null? tree)
+      acc
+      (cons (tree-val tree)
+            (preorder-acc (tree-left tree)
+                          (preorder-acc (tree-right tree) acc)))))
+
+;; preorder-list : tree -> list
+;; Returns the preorder traversal (node, left, right) of tree as a list.
+(define (preorder-list tree)
+  (preorder-acc tree '()))
+
+;; postorder-acc : tree list -> list
+;; Base case: empty tree returns the accumulated suffix unchanged.
+;; Recursive step: cons root value onto acc, then traverse right subtree, then left subtree (O(N), no append).
+(define (postorder-acc tree acc)
+  (if (null? tree)
+      acc
+      (postorder-acc (tree-left tree)
+                     (postorder-acc (tree-right tree)
+                                    (cons (tree-val tree) acc)))))
+
+;; postorder-list : tree -> list
+;; Returns the postorder traversal (left, right, node) of tree as a list.
+(define (postorder-list tree)
+  (postorder-acc tree '()))
+
+;; print-all-traversals : tree -> void
+;; Prints inorder, preorder, and postorder traversal lists on three lines using display and newline.
+(define (print-all-traversals tree)
+  (display (inorder-list tree))
+  (newline)
+  (display (preorder-list tree))
+  (newline)
+  (display (postorder-list tree))
+  (newline))
