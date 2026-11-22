@@ -26,22 +26,41 @@
     (if (null? xs)
         (my-reverse acc)
         (loop (cdr xs) (cons (fn (car xs)) acc)))))
+
 ;; is-list? : any -> boolean
 ;; Returns #t if val is a list (either empty or a pair, as no dotted pairs occur).
 (define (is-list? val)
   (or (null? val) (pair? val)))
 
+;; make-inserter : atom (integer -> boolean) -> (list -> list)
+;; Returns a one-argument function that inserts x at the front of every list
+;; (at all levels of nesting) whose original length satisfies len-ok?.
+(define (make-inserter x len-ok?)
+  (letrec ((transform
+            (lambda (lst)
+              (let ((processed
+                     (my-map (lambda (elem)
+                               (if (is-list? elem)
+                                   (transform elem)
+                                   elem))
+                             lst)))
+                (if (len-ok? (my-length lst))
+                    (cons x processed)
+                    processed)))))
+    transform))
+
 ;; insert-if-short : atom list integer -> list
-;; Base case: empty list has length 0, becoming (x) if 0 < n, else ().
-;; Recursive step: recursively transform nested sublists via my-map, then
-;; prepend x if the original length of lst is strictly less than n.
+;; Inserts x at the front of every list (at every level of nesting) whose
+;; original length is strictly less than n, implemented via make-inserter.
 (define (insert-if-short x lst n)
-  (let ((processed
-         (my-map (lambda (elem)
-                   (if (is-list? elem)
-                       (insert-if-short x elem n)
-                       elem))
-                 lst)))
-    (if (< (my-length lst) n)
-        (cons x processed)
-        processed)))
+  ((make-inserter x (lambda (len) (< len n))) lst))
+
+;; print-insert-result : -> void
+;; Reads x, lst, and n in order from standard input and prints the transformed
+;; list with display followed by a newline, with no prompts or extra text.
+(define (print-insert-result)
+  (let* ((x (read))
+         (lst (read))
+         (n (read)))
+    (display (insert-if-short x lst n))
+    (newline)))
